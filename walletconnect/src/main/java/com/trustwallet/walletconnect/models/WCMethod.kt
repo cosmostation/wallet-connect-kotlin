@@ -34,5 +34,14 @@ enum class WCMethod {
     GET_ACCOUNTS,
 
     @SerializedName("trust_signTransaction")
-    SIGN_TRANSACTION;
+    SIGN_TRANSACTION,
+
+    @SerializedName("keplr_enable_wallet_connect_v1")
+    KEPLR_ENABLE_V1,
+
+    @SerializedName("keplr_get_key_wallet_connect_v1")
+    KEPLR_GET_KEY_V1,
+
+    @SerializedName("keplr_sign_amino_wallet_connect_v1")
+    KEPLR_SIGN_AMINO_V1;
 }
