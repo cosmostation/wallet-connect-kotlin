@@ -23,7 +23,6 @@ import com.trustwallet.walletconnect.models.session.WCSessionRequest
 import com.trustwallet.walletconnect.models.session.WCSessionUpdate
 import okhttp3.*
 import okio.ByteString
-import org.json.JSONObject
 import java.util.*
 
 const val JSONRPC_VERSION = "2.0"
@@ -85,9 +84,9 @@ open class WCClient(
     var onBnbTxConfirm: (id: Long, order: WCBinanceTxConfirmParam) -> Unit = { _, _ -> Unit }
     var onGetAccounts: (id: Long) -> Unit = { _ -> Unit }
     var onSignTransaction: (id: Long, transaction: WCSignTransaction) -> Unit = { _, _ -> Unit }
-    var onKeplrEnable: (id: Long, transaction: List<String>) -> Unit = { _, _ -> Unit }
-    var onKeplrSignAmino: (id: Long, transaction: JsonArray) -> Unit = { _, _ -> Unit }
-    var onKeplrGetKey: (id: Long, transaction: List<String>) -> Unit = { _, _ -> Unit }
+    var onKeplrEnable: (id: Long, chainIds: List<String>) -> Unit = { _, _ -> Unit }
+    var onCosmosSignAmino: (id: Long, transaction: JsonArray) -> Unit = { _, _ -> Unit }
+    var onCosmosGetKeys: (id: Long, chainIds: List<String>) -> Unit = { _, _ -> Unit }
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
         Log.d(TAG, "<< websocket opened >>")
@@ -372,12 +371,12 @@ open class WCClient(
                 val params = gson.fromJson<List<String>>(request.params)
                 onKeplrEnable(request.id, params)
             }
-            WCMethod.KEPLR_SIGN_AMINO_V1 -> {
-                onKeplrSignAmino(request.id, request.params)
-            }
-            WCMethod.KEPLR_GET_KEY_V1 -> {
+            WCMethod.COSMOSTATION_WC_KEYS_V1, WCMethod.KEPLR_GET_KEY_V1 -> {
                 val params = gson.fromJson<List<String>>(request.params)
-                onKeplrGetKey(request.id, params)
+                onCosmosGetKeys(request.id, params)
+            }
+            WCMethod.COSMOSTATION_WC_SIGN_AMINO_V1, WCMethod.KEPLR_SIGN_AMINO_V1 -> {
+                onCosmosSignAmino(request.id, request.params)
             }
         }
     }
