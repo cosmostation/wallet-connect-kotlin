@@ -45,9 +45,9 @@ enum class WCMethod {
     @SerializedName("keplr_sign_amino_wallet_connect_v1")
     KEPLR_SIGN_AMINO_V1,
 
-    @SerializedName("cosmostation_wc_keys_v1")
-    COSMOSTATION_WC_KEYS_V1,
+    @SerializedName("cosmostation_wc_accounts_v1")
+    COSMOSTATION_WC_ACCOUNTS_V1,
 
-    @SerializedName("cosmostation_wc_sign_amino_v1")
-    COSMOSTATION_WC_SIGN_AMINO_V1;
+    @SerializedName("cosmostation_wc_sign_tx_v1")
+    COSMOSTATION_WC_SIGN_TX_V1;
 }

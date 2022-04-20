@@ -85,8 +85,10 @@ open class WCClient(
     var onGetAccounts: (id: Long) -> Unit = { _ -> Unit }
     var onSignTransaction: (id: Long, transaction: WCSignTransaction) -> Unit = { _, _ -> Unit }
     var onKeplrEnable: (id: Long, chainIds: List<String>) -> Unit = { _, _ -> Unit }
-    var onCosmosSignAmino: (id: Long, transaction: JsonArray) -> Unit = { _, _ -> Unit }
-    var onCosmosGetKeys: (id: Long, chainIds: List<String>) -> Unit = { _, _ -> Unit }
+    var onKeplrSignAmino: (id: Long, transaction: JsonArray) -> Unit = { _, _ -> Unit }
+    var onKeplrGetKeys: (id: Long, chainIds: List<String>) -> Unit = { _, _ -> Unit }
+    var onCosmostationSignTx: (id: Long, transaction: JsonArray) -> Unit = { _, _ -> Unit }
+    var onCosmostationAccounts: (id: Long, chainIds: List<String>) -> Unit = { _, _ -> Unit }
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
         Log.d(TAG, "<< websocket opened >>")
@@ -371,12 +373,19 @@ open class WCClient(
                 val params = gson.fromJson<List<String>>(request.params)
                 onKeplrEnable(request.id, params)
             }
-            WCMethod.COSMOSTATION_WC_KEYS_V1, WCMethod.KEPLR_GET_KEY_V1 -> {
+            WCMethod.COSMOSTATION_WC_ACCOUNTS_V1 -> {
                 val params = gson.fromJson<List<String>>(request.params)
-                onCosmosGetKeys(request.id, params)
+                onCosmostationAccounts(request.id, params)
             }
-            WCMethod.COSMOSTATION_WC_SIGN_AMINO_V1, WCMethod.KEPLR_SIGN_AMINO_V1 -> {
-                onCosmosSignAmino(request.id, request.params)
+            WCMethod.KEPLR_GET_KEY_V1 -> {
+                val params = gson.fromJson<List<String>>(request.params)
+                onKeplrGetKeys(request.id, params)
+            }
+            WCMethod.COSMOSTATION_WC_SIGN_TX_V1 -> {
+                onCosmostationSignTx(request.id, request.params)
+            }
+            WCMethod.KEPLR_SIGN_AMINO_V1 -> {
+                onKeplrSignAmino(request.id, request.params)
             }
         }
     }
