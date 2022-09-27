@@ -89,6 +89,9 @@ open class WCClient(
     var onKeplrGetKeys: (id: Long, chainIds: List<String>) -> Unit = { _, _ -> Unit }
     var onCosmostationSignTx: (id: Long, transaction: JsonArray) -> Unit = { _, _ -> Unit }
     var onCosmostationAccounts: (id: Long, chainIds: List<String>) -> Unit = { _, _ -> Unit }
+    var onCosmosGetAccounts: (id: Long, chainIds: List<String>) -> Unit = { _, _ -> Unit }
+    var onCosmosSignDirect: (id: Long, transaction: JsonArray) -> Unit = { _, _ -> Unit }
+    var onCosmosSignAmino: (id: Long, transaction: JsonArray) -> Unit = { _, _ -> Unit }
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
         Log.d(TAG, "<< websocket opened >>")
@@ -387,6 +390,17 @@ open class WCClient(
             WCMethod.KEPLR_SIGN_AMINO_V1 -> {
                 onKeplrSignAmino(request.id, request.params)
             }
+            WCMethod.COSMOS_GET_ACCOUNTS -> {
+                val params = gson.fromJson<List<String>>(request.params)
+                onCosmosGetAccounts(request.id, params)
+            }
+            WCMethod.COSMOS_SIGN_DIRECT -> {
+                onCosmosSignDirect(request.id, request.params)
+            }
+            WCMethod.COSMOS_SIGN_AMINO -> {
+                onCosmosSignAmino(request.id, request.params)
+            }
+            else -> {}
         }
     }
 
