@@ -89,6 +89,7 @@ open class WCClient(
     var onKeplrGetKeys: (id: Long, chainIds: List<String>) -> Unit = { _, _ -> Unit }
     var onCosmostationSignTx: (id: Long, transaction: JsonArray) -> Unit = { _, _ -> Unit }
     var onCosmostationAccounts: (id: Long, chainIds: List<String>) -> Unit = { _, _ -> Unit }
+    var onCosmostationSignDirectTx: (id: Long, transaction: JsonArray) -> Unit = { _, _ -> Unit }
     var onCosmosGetAccounts: (id: Long, chainIds: List<String>) -> Unit = { _, _ -> Unit }
     var onCosmosSignDirect: (id: Long, transaction: JsonArray) -> Unit = { _, _ -> Unit }
     var onCosmosSignAmino: (id: Long, transaction: JsonArray) -> Unit = { _, _ -> Unit }
@@ -399,6 +400,9 @@ open class WCClient(
             }
             WCMethod.COSMOS_SIGN_AMINO -> {
                 onCosmosSignAmino(request.id, request.params)
+            }
+            WCMethod.COSMOSTATION_WC_SIGN_DIRECT_TX_V1 -> {
+                onCosmostationSignDirectTx(request.id, request.params)
             }
             else -> {}
         }

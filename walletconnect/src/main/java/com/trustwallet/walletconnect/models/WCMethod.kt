@@ -54,6 +54,9 @@ enum class WCMethod {
     @SerializedName("cosmostation_wc_sign_tx_v1")
     COSMOSTATION_WC_SIGN_TX_V1,
 
+    @SerializedName("cosmostation_wc_sign_direct_tx_v1")
+    COSMOSTATION_WC_SIGN_DIRECT_TX_V1,
+
     @SerializedName("cosmos_signDirect")
     COSMOS_SIGN_DIRECT,
 
